@@ -19,8 +19,10 @@ int main() {
 	nodeManager->addRelation(39, 15);
 	nodeManager->addRelation(3, 22);
 	nodeManager->addRelation(22, 4);
-	nodeManager->addRelation(22, 38);	// input verirken unique'lik olsun mu
 
-	cout << nodeManager->getNodeTree(0);
+	Node node = nodeManager->getNode(0);	// const Node& node
+	cout << node << endl;
+
+	delete nodeManager;
 
 }

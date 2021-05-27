@@ -7,13 +7,18 @@ NodeManager::NodeManager() {
 
 NodeManager::~NodeManager() {
 
+	for (int i = 0; i < trees.size(); i++) {
+		delete trees[i];
+		trees[i] = NULL;
+	}
+	trees.clear();
 }
 
 bool recursiveAdder(Node* tree, int parent, int child) {
-	if (*tree == parent) {
+	if (tree->getId() == parent) {
 		vector<Node*> children = tree->getChildren();
 		for (int j = 0; j < children.size(); j++)
-			if (*children[j] == child)
+			if (children[j]->getId() == child)
 				return true;
 		Node* node = new Node(child);
 		*tree += *node;
@@ -36,7 +41,7 @@ void NodeManager::addRelation(int parent, int child) {
 	}
 
 	for (int i = 0; i < trees.size(); i++) {
-		if (*trees[i] == child) {
+		if (trees[i]->getId() == child) {
 			Node* node = new Node(parent);
 			*node += *trees[i];
 			trees[i] = node;
@@ -51,7 +56,7 @@ void NodeManager::addRelation(int parent, int child) {
 
 int findRank(vector<Node*> treeSet, int id) {
 	for (int i = 0; i < treeSet.size(); i++)
-		if (*treeSet[i] == id)
+		if (treeSet[i]->getId() == id)
 			return i;
 	return -1;
 }
@@ -60,7 +65,7 @@ vector<Node*>& finder(vector<Node*> treeSet, int id) {
 	vector<Node*> pair;	// parent-child where child is the node whose id is given
 
 	for (int i = 0; i < treeSet.size(); i++) {
-		if (*treeSet[i] == id) {
+		if (treeSet[i]->getId() == id) {
 			pair.push_back(NULL);
 			pair.push_back(treeSet[i]);
 			return pair;
@@ -100,10 +105,6 @@ void NodeManager::setDataToNode(int id, char data) {
 	}	
 	
 	delete node;
-}
-
-const Node& NodeManager::getNodeTree(int index) {
-	return *trees[index];
 }
 
 const Node& NodeManager::getNode(int id) {

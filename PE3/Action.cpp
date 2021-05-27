@@ -13,13 +13,13 @@ Complete::~Complete() {
 
 Node* act_helper(const Node& node, Node* actingNode) {
 
-	if (node == *actingNode) {
+	if (node.getId() == actingNode->getId()) {
 		Node* cnode1 = new Node(node);	// copy constructor ekleyeyim
 		Node* cnode2 = actingNode;
 		Node* output = *cnode1 & *cnode2;
 		for (int i = 0; i < cnode1->getChildren().size(); i++) {
 			for (int j = 0; j < cnode2->getChildren().size(); j++)
-				if (*cnode1->getChildren()[i] == *cnode2->getChildren()[j]) {
+				if (cnode1->getChildren()[i]->getId() == cnode2->getChildren()[j]->getId()) {
 					Node* child = act_helper(*cnode1->getChildren()[i], cnode2->getChildren()[j]);
 					*output += *child;
 					break;

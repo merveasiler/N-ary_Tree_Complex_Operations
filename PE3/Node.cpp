@@ -29,22 +29,16 @@ Node::Node(const Node& node) {
 	}
 }
 
-bool Node::operator==(const Node& node) const {
-	if (this->id == node.id)
-		return true;
-	return false;
+int Node::getId() const {
+	return id;
 }
 
-bool Node::operator==(int id) {
-	if (this->id == id)
-		return true;
-	return false;
+char Node::getData() const {
+	throw InvalidRequest();
 }
 
-bool Node::operator<(const Node& node) const {
-	if (this->id < node.id)
-		return true;
-	return false;
+vector<Node*>& Node::getChildren() {
+	return children;
 }
 
 void Node::operator+=(Node& childNode) {
@@ -70,14 +64,6 @@ Node* Node::operator&(const Node& node) const {
 	return new_node;
 }
 
-vector<Node*>& Node::getChildren() {
-	return children;
-}
-
-char Node::getData() const {
-	throw InvalidRequest();
-}
-
 ostream& operator<<(ostream& os, const Node& node) {
 	os << "[" << node.id;
 	for (int i = 0; i < node.children.size(); i++)
@@ -93,11 +79,11 @@ DataNode::DataNode(int id, char data) : Node(id) {
 }
 
 DataNode::~DataNode() {
-	// automatically calls base class destructor?
+	// automatically calls base class destructor
 }
 
-DataNode::DataNode(const DataNode& dataNode) : Node(dataNode) {	// buna gerek de olmuyor ama kafalarý karýþýr mý?
-	// does automatically call base class copy constructor?????
+DataNode::DataNode(const DataNode& dataNode) : Node(dataNode) {
+	
 	this -> data = dataNode.data;
 }
 
