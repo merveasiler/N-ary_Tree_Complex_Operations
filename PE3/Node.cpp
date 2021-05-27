@@ -7,7 +7,8 @@ Node::Node(int id) {
 
 Node::~Node() {
 	for (int i = 0; i < children.size(); i++) {
-		delete children[i];
+		if (children[i] != NULL)
+			delete children[i];
 		children[i] = NULL;
 	}
 	children.clear();
@@ -29,22 +30,16 @@ Node::Node(const Node& node) {
 	}
 }
 
-bool Node::operator==(const Node& node) const {
-	if (this->id == node.id)
-		return true;
-	return false;
+int Node::getId() const {
+	return id;
 }
 
-bool Node::operator==(int id) {
-	if (this->id == id)
-		return true;
-	return false;
+char Node::getData() const {
+	throw InvalidRequest();
 }
 
-bool Node::operator<(const Node& node) const {
-	if (this->id < node.id)
-		return true;
-	return false;
+vector<Node*>& Node::getChildren() {
+	return children;
 }
 
 void Node::operator+=(Node& childNode) {
@@ -52,13 +47,13 @@ void Node::operator+=(Node& childNode) {
 }
 
 Node* Node::operator&(const Node& node) const {
-	
+
 	Node* new_node = NULL;
 	try {
 		char data = node.getData();
 		new_node = new DataNode(node, data);
 	}
-	catch(exception InvalidRequest) {
+	catch (exception InvalidRequest) {
 		try {
 			char data = this->getData();
 			new_node = new DataNode(node, data);
@@ -70,20 +65,18 @@ Node* Node::operator&(const Node& node) const {
 	return new_node;
 }
 
-vector<Node*>& Node::getChildren() {
-	return children;
-}
-
-char Node::getData() const {
-	throw InvalidRequest();
-}
-
 ostream& operator<<(ostream& os, const Node& node) {
-	os << "[" << node.id;
-	for (int i = 0; i < node.children.size(); i++)
+	try {
+		node.getData();
+		os << *(DataNode*)&node;
+	}
+	catch (InvalidRequest e) {
+		os << "[" << node.id;
+		for (int i = 0; i < node.children.size(); i++)
 			os << ", " << *node.children[i];
-	os << "]";
-	return os;
+		os << "]";
+		return os;
+	}
 }
 
 /*************** DataNode *****************/
@@ -93,12 +86,12 @@ DataNode::DataNode(int id, char data) : Node(id) {
 }
 
 DataNode::~DataNode() {
-	// automatically calls base class destructor?
+	// automatically calls base class destructor
 }
 
-DataNode::DataNode(const DataNode& dataNode) : Node(dataNode) {	// buna gerek de olmuyor ama kafalarý karýþýr mý?
-	// does automatically call base class copy constructor?????
-	this -> data = dataNode.data;
+DataNode::DataNode(const DataNode& dataNode) : Node(dataNode) {
+
+	this->data = dataNode.data;
 }
 
 DataNode::DataNode(const Node& node, char data) : Node(node) {
@@ -110,6 +103,9 @@ char DataNode::getData() const {
 }
 
 ostream& operator<<(ostream& os, const DataNode& dataNode) {
-	os << dataNode.data;
+	os << "[" << "(" << dataNode.id << "," << dataNode.data << ")";
+	for (int i = 0; i < dataNode.children.size(); i++)
+		os << ", " << *dataNode.children[i];
+	os << "]";
 	return os;
 }

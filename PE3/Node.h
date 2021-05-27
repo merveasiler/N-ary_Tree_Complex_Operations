@@ -5,67 +5,71 @@
 using namespace std;
 
 class Node {
-	protected:
-		vector<Node*> children;
-		int id;
+protected:
+	vector<Node*> children;
+	int id;
 
 	// DO NOT MODIFY BELOW
-	public:
-		// Contsructor : initializes <id> of the object to the given integer
-		Node(int);
-		
-		// Destructor  : totally depends on your implementation
-		// Note that it should delete any Node/DataNode linked to it
-		~Node();
-		
-		// Copy constructor	: deep copy
-		// Copy the <id> of the given Node object
-		// Note that it should copy any Node/DataNode linked to it also
-		Node(const Node&);
-		
-		// Returns <id> of the object
-		int getId() const;
+public:
+	// Contsructor : initializes <id> of the object to the given integer
+	Node(int);
 
-		// Returns <data> of the object for the type DataNode
-		// Throws InvalidRequest exception for the type Node
-		char getData() const;
-		
-		// Operator overload +=	: Adds the reference of the  
-		void operator+=(Node&);	
+	// Destructor  : totally depends on your implementation
+	// Note that it should delete any Node/DataNode linked to it
+	~Node();
 
-		// Operator overload &	:
-		Node* operator&(const Node&) const;
+	// Copy constructor	: deep copy
+	// Copy the <id> of the given Node object
+	// Note that it should copy any Node/DataNode linked to it also
+	Node(const Node&);
 
-		// Returns a reference to the collection of children
-		vector<Node*>& getChildren();
-		
-		// Operator overload <<	:
-		friend ostream& operator<<(ostream& os, const Node& node);
+	// Returns <id> of the object
+	int getId() const;
+
+	// Returns <data> of the object for the type DataNode
+	// Throws InvalidRequest exception for the type Node
+	virtual char getData() const;
+
+	// Returns the reference for collection of children
+	vector<Node*>& getChildren();
+
+	// Operator overload +=	: 
+	// Adds the reference of the given node into the children of the left operand
+	void operator+=(Node&);
+
+	// Operator overload &	:
+	Node* operator&(const Node&) const;
+
+	// Operator overload <<	:
+	friend ostream& operator<<(ostream& os, const Node& node);
 };
 
 class DataNode : public Node {
 	char data;
 
 	// DO NOT MODIFY BELOW
-	public:
-		// Contsructor : initializes <id> of the object to the given integer
-		//               and <data> of the object to the given char
-		DataNode(int, char);
+public:
+	// Contsructor : initializes <id> of the object to the given integer
+	//               and <data> of the object to the given char
+	DataNode(int, char);
 
-		// Destructor  : totally depends on your implementation
-		// Note that it should delete any Node/DataNode linked to it
-		~DataNode();
-		
-		// Copy constructor	: deep copy
-		// Copy the <id> and <data> of the given DataNode object
-		// Note that it should copy any Node/DataNode linked to it also
-		DataNode(const DataNode&);
+	// Destructor  : totally depends on your implementation
+	// Note that it should delete any Node/DataNode linked to it
+	~DataNode();
 
-		// Copy constructor : deep copy 
-		// Copy the <id> of the given Node object and assign the given char value to <data>
-		// Note that it should copy any Node/DataNode linked to it also
-		DataNode(const Node&, char);
+	// Copy constructor	: deep copy
+	// Copy the <id> and <data> of the given DataNode object
+	// Note that it should copy any Node/DataNode linked to it also
+	DataNode(const DataNode&);
 
-		// Operator overload <<	:
-		friend ostream& operator<<(ostream& os, const DataNode& node);
+	// Copy constructor : deep copy 
+	// Copy the <id> of the given Node object and assign the given char value to <data>
+	// Note that it should copy any Node/DataNode linked to it also
+	DataNode(const Node&, char);
+
+	// Returns <data> of the object for the type DataNode
+	char getData() const;
+
+	// Operator overload <<	:
+	friend ostream& operator<<(ostream& os, const DataNode& node);
 };
