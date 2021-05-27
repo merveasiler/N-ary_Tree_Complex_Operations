@@ -14,53 +14,6 @@ NodeManager::~NodeManager() {
 	trees.clear();
 }
 
-// Helper function for addRelation()
-// Tries to find the parent node (whose id is given) on the tree whose initial node is given
-// When it finds the parent, creates a child node depending on the situation
-// If it finds the parent and adds the child, returns true
-// If the parent does not exist, then returns false
-bool recursiveAdder(Node* tree, int parent, int child) {
-	if (tree->getId() == parent) {
-		vector<Node*> children = tree->getChildren();
-		for (int j = 0; j < children.size(); j++)
-			if (children[j]->getId() == child)
-				return true;
-		Node* node = new Node(child);
-		*tree += *node;
-		return true;
-	}
-
-	vector<Node*> children = tree->getChildren();
-	for (int j = 0; j < children.size(); j++)
-		if (recursiveAdder(children[j], parent, child))
-			return true;
-
-	return false;
-}
-
-/*
-void NodeManager::addRelation(int parent, int child) {
-
-	for (int i = 0; i < trees.size(); i++) {
-		if (recursiveAdder(trees[i], parent, child))
-			return;
-	}
-
-	for (int i = 0; i < trees.size(); i++) {
-		if (trees[i]->getId() == child) {
-			Node* node = new Node(parent);
-			*node += *trees[i];
-			trees[i] = node;
-			return;
-		}
-	}
-
-	Node* parentNode = new Node(parent);
-	Node* childNode = new Node(child);
-	*parentNode += *childNode;
-	trees.push_back(parentNode);
-}
-*/
 // Helper function for setDataToNode()
 // Returns the rank of the tree (whose root node is given) among the given container of trees
 // If it can not find the given node id as the inital node of some tree, then it returns -1

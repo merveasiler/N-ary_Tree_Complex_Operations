@@ -38,6 +38,14 @@ public:
 	void operator+=(Node&);
 
 	// Operator overload &	:
+	// This operator can be need in Complete::act()
+	// This operator ands two node objects such that if the operands are: 
+	//		- Node x & Node y               -> it returns a new Node which is a copy of x (x=y)
+	//		- Node x & DataNode y           -> it returns a new DataNode which is a copy of y
+	//		- DataNode x & Node y           -> it returns a new DataNode which is a copy of x
+	//		- DataNode x & DataNode y       -> it returns a new DataNode which is a copy of x (x=y)
+	// It is ensured that this operation is called for the nodes whose ids are equal always and
+	//       if both operand is of the type DataNode, then their char data are equal too.
 	Node* operator&(const Node&) const;
 
 	// Operator overload <<	:

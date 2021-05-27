@@ -1,20 +1,23 @@
 #include "Action.h"
 #include "Exception.h"
 
-/********************** Complete **************************/
+/********************** CompleteAction **************************/
 
-Complete::Complete(const Node& node) {
+CompleteAction::CompleteAction(const Node& node) {
 	Node* memberNode = new Node(node);
 }
 
-Complete::~Complete() {
+CompleteAction::~CompleteAction() {
 	delete memberNode;
 }
 
+// Helper function for CompleteAction::act()
+// It recursively ands the given argument Nodes (namely not only themselves but also their children)
+// It returns the result as a totally new tree (reference to a new Node object)
 Node* act_helper(const Node& node, Node* actingNode) {
 
 	if (node.getId() == actingNode->getId()) {
-		Node* cnode1 = new Node(node);	// copy constructor ekleyeyim
+		Node* cnode1 = new Node(node);	// need to copy because getChildren() can not be called otherwise
 		Node* cnode2 = actingNode;
 		Node* output = *cnode1 & *cnode2;
 		for (int i = 0; i < cnode1->getChildren().size(); i++) {
@@ -31,23 +34,26 @@ Node* act_helper(const Node& node, Node* actingNode) {
 
 }
 
-Node* Complete::act(const Node& node) {
+Node* CompleteAction::act(const Node* node) const {
 
-	return act_helper(node, memberNode);
+	return act_helper(*node, memberNode);
 
 }
 
-/************************* Cut ***************************/
+/************************* CutAction ***************************/
 
-Cut::Cut(char character) {
+CutAction::CutAction(char character) {
 	this->memberChar = character;
 }
 
-Cut::~Cut() {
+CutAction::~CutAction() {
 
 }
 
-int Cut::count2Gen(Node* node) {
+// Helper function for CutAction::act()
+// It counts the "memberChar" inside the children and grandchildren of the given Node
+// Returns the total count
+int CutAction::count2Gen(Node* node) const {
 	int total = 0;
 	vector<Node*>& children = node->getChildren();
 	for (int i = 0; i < children.size(); i++) {
@@ -69,15 +75,20 @@ int Cut::count2Gen(Node* node) {
 	}
 	return total;
 }
+
+// Helper function for CutAction::act()
+// It returns true if the given node has at least 1 grandchild, false otherwise
 bool doesHaveGrandChild(Node* node) {
 
 	vector<Node*>& children = node->getChildren();
 	for (int i = 0; i < children.size(); i++)
 		if (children[i]->getChildren().size() > 0)
-			return false;
-	return true;
+			return true;
+	return false;
 }
 
+// Helper function for CutAction::act()
+// It completely deletes the children of the given node
 void deleteChildren(Node* node) {
 	for (int j = 0; j < node->getChildren().size(); j++) {
 		delete node->getChildren()[j];
@@ -86,13 +97,13 @@ void deleteChildren(Node* node) {
 	node->getChildren().clear();
 }
 
-Node* Cut::act(const Node& node) {
+Node* CutAction::act(const Node* node) const {
 
-	Node* cnode = new Node(node);
+	Node* cnode = new Node(*node);
 	for (int i = 0; i < cnode->getChildren().size(); i++) {
 		Node* child = cnode->getChildren()[i];
 		if (doesHaveGrandChild(child)) {
-			Node* newChild = act(*child);
+			Node* newChild = act(child);
 			delete child;
 			cnode->getChildren()[i] = newChild;
 		}
@@ -114,4 +125,31 @@ Node* Cut::act(const Node& node) {
 	}
 
 	return cnode;
+}
+
+/************************* CompositeAction ***************************/
+
+CompositeAction::CompositeAction() {
+	
+}
+
+CompositeAction::~CompositeAction() {
+	this->actions.clear();
+}
+
+CompositeAction* CompositeAction::addAction(const Action* action) {
+	this->actions.push_back(action);
+	return this;
+}
+
+Node* CompositeAction::act(const Node* node) const {
+
+	Node* argument = new Node(*node);
+	for (int i = 0; i < this->actions.size(); i++) {
+		Node* result = this->actions[i]->act(*argument);
+		delete argument;
+		argument = result;
+	}
+	return argument;
+
 }
