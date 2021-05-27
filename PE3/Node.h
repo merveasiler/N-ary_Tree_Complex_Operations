@@ -30,10 +30,11 @@ public:
 	// Throws InvalidRequest exception for the type Node
 	virtual char getData() const;
 
-	// Returns a reference to the collection of children
+	// Returns the reference for collection of children
 	vector<Node*>& getChildren();
 
-	// Operator overload +=	: Adds the reference of the  
+	// Operator overload +=	: 
+	// Adds the reference of the given node into the children of the left operand
 	void operator+=(Node&);
 
 	// Operator overload &	:

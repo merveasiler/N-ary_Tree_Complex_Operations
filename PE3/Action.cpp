@@ -32,7 +32,7 @@ Node* act_helper(const Node& node, Node* actingNode) {
 }
 
 Node* Complete::act(const Node& node) {
-	
+
 	return act_helper(node, memberNode);
 
 }
@@ -70,7 +70,7 @@ int Cut::count2Gen(Node* node) {
 	return total;
 }
 bool doesHaveGrandChild(Node* node) {
-	
+
 	vector<Node*>& children = node->getChildren();
 	for (int i = 0; i < children.size(); i++)
 		if (children[i]->getChildren().size() > 0)
@@ -97,7 +97,7 @@ Node* Cut::act(const Node& node) {
 			cnode->getChildren()[i] = newChild;
 		}
 		else {
-			if (count2Gen(child) >=2) {
+			if (count2Gen(child) >= 2) {
 				deleteChildren(child);
 				Node* newChild = new DataNode(*child, memberChar);
 				delete child;

@@ -7,7 +7,8 @@ Node::Node(int id) {
 
 Node::~Node() {
 	for (int i = 0; i < children.size(); i++) {
-		delete children[i];
+		if (children[i] != NULL)
+			delete children[i];
 		children[i] = NULL;
 	}
 	children.clear();
@@ -46,13 +47,13 @@ void Node::operator+=(Node& childNode) {
 }
 
 Node* Node::operator&(const Node& node) const {
-	
+
 	Node* new_node = NULL;
 	try {
 		char data = node.getData();
 		new_node = new DataNode(node, data);
 	}
-	catch(exception InvalidRequest) {
+	catch (exception InvalidRequest) {
 		try {
 			char data = this->getData();
 			new_node = new DataNode(node, data);
@@ -65,11 +66,17 @@ Node* Node::operator&(const Node& node) const {
 }
 
 ostream& operator<<(ostream& os, const Node& node) {
-	os << "[" << node.id;
-	for (int i = 0; i < node.children.size(); i++)
+	try {
+		node.getData();
+		os << *(DataNode*)&node;
+	}
+	catch (InvalidRequest e) {
+		os << "[" << node.id;
+		for (int i = 0; i < node.children.size(); i++)
 			os << ", " << *node.children[i];
-	os << "]";
-	return os;
+		os << "]";
+		return os;
+	}
 }
 
 /*************** DataNode *****************/
@@ -83,8 +90,8 @@ DataNode::~DataNode() {
 }
 
 DataNode::DataNode(const DataNode& dataNode) : Node(dataNode) {
-	
-	this -> data = dataNode.data;
+
+	this->data = dataNode.data;
 }
 
 DataNode::DataNode(const Node& node, char data) : Node(node) {
@@ -96,6 +103,9 @@ char DataNode::getData() const {
 }
 
 ostream& operator<<(ostream& os, const DataNode& dataNode) {
-	os << dataNode.data;
+	os << "[" << "(" << dataNode.id << "," << dataNode.data << ")";
+	for (int i = 0; i < dataNode.children.size(); i++)
+		os << ", " << *dataNode.children[i];
+	os << "]";
 	return os;
 }

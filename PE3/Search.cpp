@@ -2,14 +2,14 @@
 #include "Exception.h"
 
 vector<char> PreOrder::match(const Node* node) const {
-	
+
 	Node* cnode = new Node(*node);	// bu tarz konularda uyarý yap, panikleyip soru sormaya kalkýþmasýnlar
 
 	vector<char> password;
 	try {
 		password.push_back(node->getData());
 	}
-	catch (InvalidRequest e) {	}
+	catch (InvalidRequest e) {}
 
 	while (cnode->getChildren().size() > 0) {
 		Node* minNode = cnode->getChildren()[0];
