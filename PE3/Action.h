@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __ACTION_H__
+#define __ACTION_H__
 
 #include "Node.h"
 
@@ -6,7 +7,7 @@ class Action {
 
 	// DO NOT MODIFY BELOW
 public:
-	virtual Node* act(const Node&) const = 0;
+	virtual Node* act(const Node*) const = 0;
 };
 
 class CompleteAction : public Action {
@@ -67,3 +68,5 @@ public:
 	// You have to construct a new Node by applying the actions in the given order and return that node
 	Node* act(const Node*) const;
 };
+
+#endif

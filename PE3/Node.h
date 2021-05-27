@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __NODE_H__
+#define __NODE_H__
 
 #include <iostream>
 #include <vector>
@@ -81,3 +82,5 @@ public:
 	// Operator overload <<	:
 	friend ostream& operator<<(ostream& os, const DataNode& node);
 };
+
+#endif

@@ -14,16 +14,16 @@ CompleteAction::~CompleteAction() {
 // Helper function for CompleteAction::act()
 // It recursively ands the given argument Nodes (namely not only themselves but also their children)
 // It returns the result as a totally new tree (reference to a new Node object)
-Node* act_helper(const Node& node, Node* actingNode) {
+Node* act_helper(const Node* node, Node* actingNode) {
 
-	if (node.getId() == actingNode->getId()) {
-		Node* cnode1 = new Node(node);	// need to copy because getChildren() can not be called otherwise
+	if (node->getId() == actingNode->getId()) {
+		Node* cnode1 = new Node(*node);	// need to copy because getChildren() can not be called otherwise
 		Node* cnode2 = actingNode;
 		Node* output = *cnode1 & *cnode2;
 		for (int i = 0; i < cnode1->getChildren().size(); i++) {
 			for (int j = 0; j < cnode2->getChildren().size(); j++)
 				if (cnode1->getChildren()[i]->getId() == cnode2->getChildren()[j]->getId()) {
-					Node* child = act_helper(*cnode1->getChildren()[i], cnode2->getChildren()[j]);
+					Node* child = act_helper(cnode1->getChildren()[i], cnode2->getChildren()[j]);
 					*output += *child;
 					break;
 				}
@@ -36,7 +36,7 @@ Node* act_helper(const Node& node, Node* actingNode) {
 
 Node* CompleteAction::act(const Node* node) const {
 
-	return act_helper(*node, memberNode);
+	return act_helper(node, memberNode);
 
 }
 
@@ -146,7 +146,7 @@ Node* CompositeAction::act(const Node* node) const {
 
 	Node* argument = new Node(*node);
 	for (int i = 0; i < this->actions.size(); i++) {
-		Node* result = this->actions[i]->act(*argument);
+		Node* result = this->actions[i]->act(argument);
 		delete argument;
 		argument = result;
 	}

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __NODEMANAGER_H__
+#define __NODEMANAGER_H__
 
 #include "Node.h"
 #include <vector>
@@ -41,3 +42,5 @@ public:
 	// It is ensured that the node whose id is given exists.
 	const Node& getNode(int);
 };
+
+#endif

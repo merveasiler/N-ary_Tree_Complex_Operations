@@ -1,6 +1,5 @@
 #include "Node.h"
 #include "NodeManager.h"
-#include "Search.h"
 #include "Action.h"
 
 int main() {
@@ -103,7 +102,6 @@ int main() {
 	cout << root2 << endl;
 
 	Action* action = new CompleteAction(root1);
-	
 	Node* completeTree = action->act(&root2);
 
 	cout << *completeTree << endl;
