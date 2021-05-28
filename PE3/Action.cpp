@@ -4,7 +4,7 @@
 /********************** CompleteAction **************************/
 
 CompleteAction::CompleteAction(const Node& node) {
-	Node* memberNode = new Node(node);
+	this->memberNode = new Node(node);
 }
 
 CompleteAction::~CompleteAction() {
@@ -14,21 +14,23 @@ CompleteAction::~CompleteAction() {
 // Helper function for CompleteAction::act()
 // It recursively ands the given argument Nodes (namely not only themselves but also their children)
 // It returns the result as a totally new tree (reference to a new Node object)
-Node* act_helper(const Node* node, Node* actingNode) {
+Node* act_helper(Node* cnode1, Node* cnode2) {
 
-	if (node->getId() == actingNode->getId()) {
-		Node* cnode1 = new Node(*node);	// need to copy because getChildren() can not be called otherwise
-		Node* cnode2 = actingNode;
+	if (cnode1->getId() == cnode2->getId()) {
 		Node* output = *cnode1 & *cnode2;
 		for (int i = 0; i < cnode1->getChildren().size(); i++) {
 			for (int j = 0; j < cnode2->getChildren().size(); j++)
 				if (cnode1->getChildren()[i]->getId() == cnode2->getChildren()[j]->getId()) {
 					Node* child = act_helper(cnode1->getChildren()[i], cnode2->getChildren()[j]);
-					*output += *child;
+					for (int k=0; k < output->getChildren().size(); k++)
+						if (output->getChildren()[k]->getId() == child->getId()) {
+							delete output->getChildren()[k];
+							output->getChildren()[k] = child;
+							break;
+						}
 					break;
 				}
 		}
-		delete cnode1;
 		return output;
 	}
 
@@ -36,7 +38,19 @@ Node* act_helper(const Node* node, Node* actingNode) {
 
 Node* CompleteAction::act(const Node* node) const {
 
-	return act_helper(node, memberNode);
+	Node* otherNode = NULL;
+	try {
+		char data = node->getData();
+		otherNode = new DataNode(*node, data);
+	}
+	catch (InvalidRequest e) {
+		otherNode = new Node(*node);
+	}
+
+	Node* result = act_helper(memberNode, otherNode);
+
+	delete otherNode;
+	return result;
 
 }
 

@@ -26,7 +26,7 @@ Node::Node(const Node& node) {
 		catch (InvalidRequest e) {
 			newchild = new Node(*child);
 		}
-		this->children.push_back(child);
+		this->children.push_back(newchild);
 	}
 }
 

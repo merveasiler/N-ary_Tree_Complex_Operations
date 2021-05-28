@@ -4,6 +4,154 @@
 
 int main() {
 
+	NodeManager* nm = new NodeManager();
+	nm->addRelation(100, 20);
+	nm->addRelation(100, 50);
+	nm->addRelation(100, 10);
+	nm->addRelation(20, 3);
+	nm->addRelation(20, 7);
+	nm->addRelation(7, 5);
+	nm->addRelation(7, 4);
+	nm->addRelation(50, 1);
+	nm->addRelation(50, 90);
+	nm->addRelation(90, 8);
+	nm->addRelation(8, 6);
+	nm->addRelation(8, 70);
+	nm->addRelation(6, 60);
+	nm->addRelation(6, 80);
+	nm->addRelation(10, 2);
+	nm->addRelation(2, 30);
+	nm->addRelation(2, 40);
+	nm->addRelation(2, 9);
+	nm->addRelation(40, 242);
+
+	nm->setDataToNode(5, '*');
+	nm->setDataToNode(60, '*');
+	nm->setDataToNode(80, '*');
+	nm->setDataToNode(70, '*');
+	nm->setDataToNode(242, '*');
+	nm->setDataToNode(9, '*');
+
+	const Node& root = nm->getNode(100);
+	cout << root << endl;
+
+	Action* action = new CutAction('*');
+	Node* cutTree = action->act(&root);
+
+	cout << *cutTree << endl;
+
+	delete action;
+	delete cutTree;
+	delete nm;
+
+	return 0;
+}
+
+/*
+int main() {
+
+	// A new NodeManager : nm1
+	NodeManager* nm1 = new NodeManager();
+	nm1->addRelation(10, 2);
+	nm1->addRelation(8, 6);
+	nm1->addRelation(8, 70);
+	nm1->addRelation(6, 60);
+	
+	nm1->setDataToNode(50, 'A');
+	nm1->setDataToNode(2, 'C');
+	nm1->setDataToNode(60, 'E');
+	nm1->setDataToNode(5, 'B');
+	
+	nm1->addRelation(7, 5);
+	nm1->addRelation(7, 4);
+	nm1->addRelation(20, 3);
+	nm1->addRelation(20, 7);
+	nm1->addRelation(100, 50);
+	nm1->addRelation(50, 1);
+	nm1->addRelation(100, 10);
+	
+	nm1->setDataToNode(70, 'D');
+	nm1->setDataToNode(9, 'F');
+
+	nm1->addRelation(2, 30);
+	nm1->addRelation(2, 40);
+	nm1->addRelation(2, 9);
+	nm1->addRelation(100, 20);
+	nm1->addRelation(50, 90);
+	nm1->addRelation(90, 8);
+	nm1->addRelation(6, 80);
+	
+	// A new NodeManager : nm2
+	NodeManager* nm2 = new NodeManager();
+	nm2->addRelation(10, 2);
+	nm2->addRelation(8, 6);
+	nm2->addRelation(8, 70);
+	nm2->addRelation(6, 60);
+
+	nm2->setDataToNode(50, 'A');
+	nm2->setDataToNode(2, 'C');
+	nm2->setDataToNode(100, 'G');
+	nm2->setDataToNode(1, 'I');
+
+	nm2->addRelation(7, 5);
+	nm2->addRelation(7, 4);
+	nm2->addRelation(20, 3);
+	nm2->addRelation(20, 7);
+	nm2->addRelation(100, 50);
+	nm2->addRelation(50, 1);
+	nm2->addRelation(100, 10);
+
+	nm2->setDataToNode(10, 'H');
+	nm2->setDataToNode(40, 'K');
+	nm2->setDataToNode(80, 'J');
+
+	nm2->addRelation(2, 30);
+	nm2->addRelation(2, 40);
+	nm2->addRelation(2, 9);
+	nm2->addRelation(100, 20);
+	nm2->addRelation(50, 90);
+	nm2->addRelation(90, 8);
+	nm2->addRelation(6, 80);
+	
+	const Node& root1 = nm1->getNode(100);
+	const Node& root2 = nm2->getNode(100);
+
+	cout << root1 << endl;
+	cout << root2 << endl;
+	
+	Action* action = new CompleteAction(root1);
+	Node* completeTree = action->act(&root2);
+
+	cout << *completeTree << endl;
+	
+	delete action;
+	delete completeTree;
+	delete nm1;
+	delete nm2;
+	
+	return 0;
+}
+*/
+
+/*
+int main() {
+
+	Node* n = new Node(10);
+	Node* dn = new DataNode(10, 'A');
+
+	Node* out = *n & *dn;
+	cout << *out << endl;
+
+	Node* out2 = *dn & *n;
+	cout << *out2 << endl;
+
+	return 0;
+}
+*/
+
+/*
+int main() {
+
 	NodeManager* nodeManager = new NodeManager();
 	nodeManager->addRelation(10, 12);
 	nodeManager->addRelation(3, 10);
@@ -30,84 +178,7 @@ int main() {
 	cout << node << endl;
 	delete nodeManager;
 
-	// A new NodeManager : nm1
-	NodeManager* nm1 = new NodeManager();
-	nm1->addRelation(10, 2);
-	nm1->addRelation(8, 6);
-	nm1->addRelation(8, 70);
-	nm1->addRelation(6, 60);
-
-	nm1->setDataToNode(50, 'A');
-	nm1->setDataToNode(2, 'C');
-	nm1->setDataToNode(60, 'E');
-	nm1->setDataToNode(5, 'B');
-
-	nm1->addRelation(7, 5);
-	nm1->addRelation(7, 4);
-	nm1->addRelation(20, 3);
-	nm1->addRelation(20, 7);
-	nm1->addRelation(100, 50);
-	nm1->addRelation(50, 1);
-	nm1->addRelation(100, 10);
-	nm1->addRelation(10, 2);
-
-	nm1->setDataToNode(70, 'D');
-	nm1->setDataToNode(9, 'F');
-
-	nm1->addRelation(2, 30);
-	nm1->addRelation(2, 40);
-	nm1->addRelation(2, 9);
-	nm1->addRelation(100, 20);
-	nm1->addRelation(50, 90);
-	nm1->addRelation(90, 8);
-	nm1->addRelation(6, 80);
-
-	// A new NodeManager : nm2
-	NodeManager* nm2 = new NodeManager();
-	nm2->addRelation(10, 2);
-	nm2->addRelation(8, 6);
-	nm2->addRelation(8, 70);
-	nm2->addRelation(6, 60);
-
-	nm2->setDataToNode(50, 'A');
-	nm2->setDataToNode(2, 'C');
-	nm2->setDataToNode(100, 'G');
-	nm2->setDataToNode(1, 'I');
-
-	nm2->addRelation(7, 5);
-	nm2->addRelation(7, 4);
-	nm2->addRelation(20, 3);
-	nm2->addRelation(20, 7);
-	nm2->addRelation(100, 50);
-	nm2->addRelation(50, 1);
-	nm2->addRelation(100, 10);
-	nm2->addRelation(10, 2);
-
-	nm2->setDataToNode(10, 'H');
-	nm2->setDataToNode(40, 'K');
-	nm2->setDataToNode(80, 'J');
-
-	nm2->addRelation(2, 30);
-	nm2->addRelation(2, 40);
-	nm2->addRelation(2, 9);
-	nm2->addRelation(100, 20);
-	nm2->addRelation(50, 90);
-	nm2->addRelation(90, 8);
-	nm2->addRelation(6, 80);
-
-	const Node& root1 = nm1->getNode(100);
-	const Node& root2 = nm2->getNode(100);
-
-	cout << root1 << endl;
-	cout << root2 << endl;
-
-	Action* action = new CompleteAction(root1);
-	Node* completeTree = action->act(&root2);
-
-	cout << *completeTree << endl;
-
-	delete action;
-	delete completeTree;
-	delete nm1;
-	delete nm2;
+	return 0;
 }
+*/
+	

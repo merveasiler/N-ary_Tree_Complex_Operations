@@ -47,6 +47,7 @@ public:
 	//		- DataNode x & DataNode y       -> it returns a new DataNode which is a copy of x (x=y)
 	// It is ensured that this operation is called for the nodes whose ids are equal always and
 	//       if both operand is of the type DataNode, then their char data are equal too.
+	// This operation is valid for only the root nodes, you should NOT apply it to the children in a recursive manner!
 	Node* operator&(const Node&) const;
 
 	// Operator overload <<	:
