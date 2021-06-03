@@ -21,9 +21,6 @@
     <ClInclude Include="Search.h">
       <Filter>Üst Bilgi Dosyaları</Filter>
     </ClInclude>
-    <ClInclude Include="Comparison.h">
-      <Filter>Üst Bilgi Dosyaları</Filter>
-    </ClInclude>
     <ClInclude Include="NodeManager.h">
       <Filter>Üst Bilgi Dosyaları</Filter>
     </ClInclude>
@@ -42,9 +39,6 @@
       <Filter>Kaynak Dosyaları</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
-      <Filter>Kaynak Dosyaları</Filter>
-    </ClCompile>
-    <ClCompile Include="Comparison.cpp">
       <Filter>Kaynak Dosyaları</Filter>
     </ClCompile>
     <ClCompile Include="Node.cpp">
